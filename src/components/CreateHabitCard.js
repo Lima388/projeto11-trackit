@@ -44,6 +44,7 @@ export default function CreateHabitCard(props) {
         setName("");
         setSelected([]);
         setLoading(false);
+        props.updateDailyHabitCount();
       });
   }
   function loadHabits() {
@@ -60,46 +61,54 @@ export default function CreateHabitCard(props) {
   }
   return (
     <>
-    {props.creating && ( <Card>
-      <Name
-        placeholder="nome do hábito"
-        value={name.length>0?name:""}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <Weekdays>
-        {weekdays.map((day, index) => {
-          const select = selected.includes(index);
-          return (
-            <Day
-              selected={select}
-              key={index}
-              onClick={() => {
-                selectDay(index);
-              }}
-            >
-              {day}
-            </Day>
-          );
-        })}
-      </Weekdays>
-      <Buttons>
-        {loading && (
-          <Loading>
-            <ReactLoading
-              type={"bubbles"}
-              color={"white"}
-              height={35}
-              width={70}
-            />
-          </Loading>
-        )}
-        {!loading && (
-          <Cancel onClick={() => props.setCreating(false)}>Cancelar</Cancel>
-        )}
-        {!loading && <Save onClick={createHabit}>Salvar</Save>}
-      </Buttons>
-    </Card>)}
-   
+      {props.creating && (
+        <Card>
+          <Name
+            data-identifier="input-habit-name"
+            placeholder="nome do hábito"
+            value={name.length > 0 ? name : ""}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Weekdays>
+            {weekdays.map((day, index) => {
+              const select = selected.includes(index);
+              return (
+                <Day
+                  data-identifier="week-day-btn"
+                  selected={select}
+                  key={index}
+                  onClick={() => {
+                    selectDay(index);
+                  }}
+                >
+                  {day}
+                </Day>
+              );
+            })}
+          </Weekdays>
+          <Buttons>
+            {loading && (
+              <Loading>
+                <ReactLoading
+                  type={"bubbles"}
+                  color={"white"}
+                  height={35}
+                  width={70}
+                />
+              </Loading>
+            )}
+            {!loading && (
+              <Cancel
+                data-identifier="cancel-habit-create-btn"
+                onClick={() => props.setCreating(false)}
+              >
+                Cancelar
+              </Cancel>
+            )}
+            {!loading && <Save data-identifier="save-habit-create-btn" onClick={createHabit}>Salvar</Save>}
+          </Buttons>
+        </Card>
+      )}
     </>
   );
 }
@@ -178,7 +187,7 @@ const Loading = styled.div`
   height: 35px;
   width: 85px;
 
-  background-color: #52b6ff;
+  background-color: #aadbff;
 
   border: none;
   border-radius: 5px;

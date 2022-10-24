@@ -7,7 +7,7 @@ import { UserContext } from "../App";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 
-export default function HabitsPage() {
+export default function HabitsPage(props) {
   const userData = useContext(UserContext);
   const [habits, setHabits] = useState([]);
   const [creating, setCreating] = useState(false);
@@ -27,10 +27,9 @@ export default function HabitsPage() {
 
   return (
     <>
-      <NavBar />
-      
       <Container>
         <Create
+          data-identifier="create-habit-btn"
           onClick={() => {
             setCreating(true);
           }}
@@ -39,12 +38,23 @@ export default function HabitsPage() {
           <div>+</div>
         </Create>
         {habits.map((data, key) => {
-          return <EditHabitCard data={data} habits={setHabits} key={key} />;
+          return (
+            <EditHabitCard
+              data={data}
+              habits={setHabits}
+              key={key}
+              updateDailyHabitCount={props.updateDailyHabitCount}
+            />
+          );
         })}
-        <CreateHabitCard habits={setHabits} creating={creating} setCreating={setCreating} />
-        {/* {creating && <CreateHabitCard habits={setHabits} creating={creating} setCreating={setCreating} />} */}
+        <CreateHabitCard
+          habits={setHabits}
+          creating={creating}
+          setCreating={setCreating}
+          updateDailyHabitCount={props.updateDailyHabitCount}
+        />
         {habits.length == 0 && (
-          <Empty>
+          <Empty data-identifier="no-habit-message">
             Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
             começar a trackear!
           </Empty>
@@ -90,7 +100,4 @@ const Empty = styled.p`
   font-size: 18px;
   color: ${colors.darkGrey};
   line-height: 22.5px;
-`;
-const HabitList = styled.div`
-  display: flex;
 `;

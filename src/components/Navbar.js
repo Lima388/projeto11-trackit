@@ -4,54 +4,56 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useContext } from "react";
 import { UserContext } from "../App";
+import { Link } from "react-router-dom";
+import { ProgressContext } from "../pages/HomePage";
 
-export default function NavBar(){
+export default function NavBar() {
+  const progress = useContext(ProgressContext);
   return (
     <>
-      <Header/>
-      <Footer/>
+      <Header />
+      <Footer progress={progress}/>
     </>
-  )
+  );
 }
-function Footer() {
-  const percentage = 66;
+function Footer(props) {
+  const percentage = props.progress*100;
 
   return (
     <BotBar>
-      <p>
-        Hábitos
-      </p>
+      <Link data-identifier="habit-page-action" to="/habits">
+        <p>Hábitos</p>
+      </Link>
       <Circle>
-        <CircularProgressbar
-          value={percentage}
-          text={`Hoje`}
-          background
-          backgroundPadding={6}
-          styles={buildStyles({
-            backgroundColor: colors.lightBlue,
-            textColor: "#fff",
-            pathColor: "#fff",
-            trailColor: "transparent",
-          })}
-        />
+        <Link to="/today">
+          <CircularProgressbar
+            value={percentage}
+            text={`Hoje`}
+            background
+            backgroundPadding={6}
+            styles={buildStyles({
+              backgroundColor: colors.lightBlue,
+              textColor: "#fff",
+              pathColor: "#fff",
+              trailColor: "transparent",
+            })}
+          />
+        </Link>
       </Circle>
-      <p>
-        Histórico
-      </p>
+
+      <p data-identifier="historic-page-action">Histórico</p>
     </BotBar>
   );
 }
-function Header(){
+function Header() {
   const userData = useContext(UserContext);
 
-  return(
+  return (
     <Bar>
-      <p>
-        TrackIt
-      </p>
-      <img src={userData.image}/>
+      <p>TrackIt</p>
+      <img data-identifier="avatar" src={userData.image} />
     </Bar>
-  )
+  );
 }
 
 const Circle = styled.div`
@@ -60,7 +62,7 @@ const Circle = styled.div`
   right: 50%;
   height: 90px;
   width: 90px;
-  transform: translate(-50%, -20%); 
+  transform: translate(-50%, -20%);
 `;
 const Bar = styled.div`
   z-index: 10;
@@ -70,28 +72,28 @@ const Bar = styled.div`
   height: 70px;
   background-color: ${colors.darkBlue};
 
-
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding-left: 15px;
   padding-right: 15px;
   align-items: center;
-  
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
-  
-  p{
+
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+
+  p {
     font-size: 39px;
-    font-family: 'Playball', cursive;
+    font-family: "Playball", cursive;
     color: white;
   }
-  
-  img{
+
+  img {
     height: 51px;
     width: 51px;
     border-radius: 25px;
   }
-`
+`;
 const BotBar = styled.div`
   z-index: 10;
   position: fixed;

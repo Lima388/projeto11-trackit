@@ -7,13 +7,14 @@ import { UserContext } from "../App";
 
 export default function EditHabitCard(props) {
   const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
-  const {id, name, days} = props.data;
+  const { id, name, days } = props.data;
   const userData = useContext(UserContext);
 
   function deleteHabit() {
     axios
       .delete(
-        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/"+id,
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/" +
+          id,
         {
           headers: { Authorization: `Bearer ${userData.token}` },
         }
@@ -32,26 +33,24 @@ export default function EditHabitCard(props) {
       )
       .then((data) => {
         props.habits(data.data);
+        props.updateDailyHabitCount();
       });
   }
 
   return (
     <Card>
-      <Name>{name}</Name>
+      <Name data-identifier="habit-name">{name}</Name>
       <Weekdays>
         {weekdays.map((day, index) => {
           const select = days.includes(index);
           return (
-            <Day
-              selected={select}
-              key={index}
-            >
+            <Day selected={select} key={index}>
               {day}
             </Day>
           );
         })}
       </Weekdays>
-      <Buttons onClick={deleteHabit}>
+      <Buttons data-identifier="delete-habit-btn" onClick={deleteHabit}>
         <TrashOutline color={"#6b6b6b"} height="20px" width="20px" />
       </Buttons>
     </Card>
@@ -90,7 +89,7 @@ const Day = styled.button`
   font-size: 20px;
 `;
 const Buttons = styled.div`
-position: absolute;
-  right:10px;
+  position: absolute;
+  right: 10px;
   top: 10px;
 `;
