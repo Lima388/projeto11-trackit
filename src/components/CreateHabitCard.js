@@ -1,23 +1,71 @@
-import { useState } from "react";
+import axios from "axios";
+import { useContext, useState } from "react";
 import styled from "styled-components";
+import { UserContext } from "../App";
 import { colors } from "../constants/colors";
+import ReactLoading from "react-loading";
 
-export default function CreateHabitCard() {
+export default function CreateHabitCard(props) {
   const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
   const [selected, setSelected] = useState([]);
+  const [name, setName] = useState("");
+  const userData = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+
   function selectDay(index) {
-    console.log(selected.includes(index));
+    if (loading) {
+      return;
+    }
     if (selected.includes(index)) {
-      let temp = [...selected]
+      let temp = [...selected];
       temp.splice(temp.indexOf(index), 1);
       setSelected(temp);
-    } else { 
+    } else {
       setSelected([...selected, index]);
     }
   }
+  function createHabit() {
+    setLoading(true);
+    const data = {
+      name: name,
+      days: selected,
+    };
+    axios
+      .post(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+        data,
+        {
+          headers: { Authorization: `Bearer ${userData.token}` },
+        }
+      )
+      .then(() => {
+        loadHabits();
+        props.setCreating(false);
+        setName("");
+        setSelected([]);
+        setLoading(false);
+      });
+  }
+  function loadHabits() {
+    axios
+      .get(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+        {
+          headers: { Authorization: `Bearer ${userData.token}` },
+        }
+      )
+      .then((data) => {
+        props.habits(data.data);
+      });
+  }
   return (
-    <Card>
-      <Name />
+    <>
+    {props.creating && ( <Card>
+      <Name
+        placeholder="nome do hábito"
+        value={name.length>0?name:""}
+        onChange={(e) => setName(e.target.value)}
+      />
       <Weekdays>
         {weekdays.map((day, index) => {
           const select = selected.includes(index);
@@ -35,10 +83,24 @@ export default function CreateHabitCard() {
         })}
       </Weekdays>
       <Buttons>
-        <Cancel>Cancelar</Cancel>
-        <Save>Salvar</Save>
+        {loading && (
+          <Loading>
+            <ReactLoading
+              type={"bubbles"}
+              color={"white"}
+              height={35}
+              width={70}
+            />
+          </Loading>
+        )}
+        {!loading && (
+          <Cancel onClick={() => props.setCreating(false)}>Cancelar</Cancel>
+        )}
+        {!loading && <Save onClick={createHabit}>Salvar</Save>}
       </Buttons>
-    </Card>
+    </Card>)}
+   
+    </>
   );
 }
 
@@ -46,7 +108,7 @@ const Card = styled.div`
   padding: 20px;
   background-color: white;
   border-radius: 5px;
-  height: 180px;
+  margin-bottom: 10px;
 `;
 const Name = styled.input`
   width: 100%;
@@ -56,6 +118,7 @@ const Name = styled.input`
   padding-left: 5px;
   ::placeholder {
     color: ${colors.lightGrey};
+    font-size: 20px;
   }
 `;
 const Weekdays = styled.div`
@@ -106,4 +169,21 @@ const Cancel = styled.button`
   color: ${colors.lightBlue};
   text-align: center;
   font-size: 16px;
+`;
+const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 35px;
+  width: 85px;
+
+  background-color: #52b6ff;
+
+  border: none;
+  border-radius: 5px;
+
+  div {
+    transform: translate(0, -50%);
+  }
 `;

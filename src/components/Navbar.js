@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { colors } from "../constants/colors";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useContext } from "react";
+import { UserContext } from "../App";
 
 export default function NavBar(){
   return (
@@ -22,7 +24,7 @@ function Footer() {
       <Circle>
         <CircularProgressbar
           value={percentage}
-          text={`Circle`}
+          text={`Hoje`}
           background
           backgroundPadding={6}
           styles={buildStyles({
@@ -40,15 +42,18 @@ function Footer() {
   );
 }
 function Header(){
+  const userData = useContext(UserContext);
+
   return(
     <Bar>
       <p>
         TrackIt
       </p>
-      <img src="https://lh3.googleusercontent.com/WebglHOYlW-2P7ADP9oUSSrgy12PHyAE6GP_jmJkQOZZ1XH7Pa_7216EK2qS7iJFvncqOaDjg40BrYdzPbB9qNwn"/>
+      <img src={userData.image}/>
     </Bar>
   )
 }
+
 const Circle = styled.div`
   position: absolute;
   left: 50%;
@@ -58,6 +63,7 @@ const Circle = styled.div`
   transform: translate(-50%, -20%); 
 `;
 const Bar = styled.div`
+  z-index: 10;
   position: fixed;
   left: 0;
   right: 0;
@@ -87,6 +93,7 @@ const Bar = styled.div`
   }
 `
 const BotBar = styled.div`
+  z-index: 10;
   position: fixed;
   bottom: 0;
   left: 0;

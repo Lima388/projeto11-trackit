@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import logo from "../assets/Logo.png";
 import ReactLoading from "react-loading";
+import { UserContext } from "../App";
 
-export default function LoginPage() {
+
+export default function LoginPage(props) {
+
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
   const [loading, setLoading] = useState(false);
@@ -33,7 +36,8 @@ export default function LoginPage() {
       .catch(fail);
   }
 
-  function success() {
+  function success(received) {
+    props.set(received.data);
     navigate("/habits");
   }
   function fail() {
