@@ -12,12 +12,12 @@ export default function NavBar() {
   return (
     <>
       <Header />
-      <Footer progress={progress}/>
+      <Footer progress={progress} />
     </>
   );
 }
 function Footer(props) {
-  const percentage = props.progress*100;
+  const percentage = props.progress * 100;
 
   return (
     <BotBar>
@@ -40,8 +40,9 @@ function Footer(props) {
           />
         </Link>
       </Circle>
-
-      <p data-identifier="historic-page-action">Histórico</p>
+      <Link data-identifier="history-page-action" to="/history">
+        <p data-identifier="historic-page-action">Histórico</p>
+      </Link>
     </BotBar>
   );
 }

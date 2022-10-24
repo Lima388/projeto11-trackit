@@ -8,20 +8,18 @@ export const UserContext = createContext();
 
 export default function App() {
   const [userData, setUserData] = useState(0);
-  
+
   return (
     <UserContext.Provider value={userData}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<LoginPage set={setUserData} />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/habits" element={<HomePage index={0}/>} />
-            <Route
-              path="/today"
-              element={<HomePage index={1}/>}
-            />
-          </Routes>
-        </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage set={setUserData} />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/habits" element={<HomePage index={0} />} />
+          <Route path="/today" element={<HomePage index={1} />} />
+          <Route path="/history" element={<HomePage index={2} />} />
+        </Routes>
+      </BrowserRouter>
     </UserContext.Provider>
   );
 }

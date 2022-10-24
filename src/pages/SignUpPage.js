@@ -43,7 +43,7 @@ export default function LoginPage() {
   }
   function fail() {
     setLoading(false);
-    alert("Failed!");
+    alert("Cadastro falhou!");
   }
 
   return (
@@ -84,7 +84,7 @@ export default function LoginPage() {
           </Loading>
         )}
         {!loading && (
-          <Submit data-identifier="login-btn" type="submit" value="Entrar" />
+          <Submit data-identifier="login-btn" type="submit" value="Cadastrar" />
         )}
       </Form>
       <Link data-identifier="back-to-login-action" to={`/`}>
