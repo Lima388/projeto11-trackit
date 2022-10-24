@@ -42,7 +42,7 @@ export default function LoginPage(props) {
   }
   function fail(data) {
     setLoading(false);
-    alert("Failed!");
+    alert("Login falhou!");
   }
 
   return (
