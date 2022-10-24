@@ -40,7 +40,7 @@ export default function LoginPage(props) {
     props.set(received.data);
     navigate("/habits");
   }
-  function fail() {
+  function fail(data) {
     setLoading(false);
     alert("Failed!");
   }
@@ -139,7 +139,7 @@ const Loading = styled.div`
 
   margin-bottom: 20px;
 
-  background-color: #52b6ff;
+  background-color: #aadbff;
 
   font-size: 21px;
   color: white;

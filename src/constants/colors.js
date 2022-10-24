@@ -3,6 +3,7 @@ export const colors = {
   lightBlue: "#52B6FF",
   lightGrey: "#D4D4D4",
   darkGrey: "#666666",
+  green: "#8FC549"
 }
 /* export const darkBlue = "#126BA5";
 export const lightBlue = "#52B6FF";
